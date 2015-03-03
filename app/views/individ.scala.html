@@ -1,0 +1,60 @@
+@(dataItm: List[String], objItm: List[String], name: String)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("OWL PROJECT") {
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-2">
+            <a href="/">Home</a>
+            <br/>
+            <a href="/classes">Classes</a>
+        </div>
+
+        <div class="col-md-10">
+            @if(!name.isEmpty) {
+                <h2>@name</h2>
+            }
+
+            <div class="row">
+                @if(!dataItm.isEmpty) {
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                                <!--Data Properties-->
+                                @for(value <- dataItm) {
+                                    @Html(value)
+                                    <!--<li class="lst"><a class="cls" href='/individ?q=@value'>@value</a></li>-->
+                                }
+                        </ul>
+                    </div>
+                }
+
+                @if(!objItm.isEmpty) {
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                                <!--Object Properties-->
+                                @for(value <- objItm) {
+                                    @Html(value)
+                                }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script language="JavaScript">
+    $(document).ready(function() {
+
+
+
+    });
+</script>
+
+}

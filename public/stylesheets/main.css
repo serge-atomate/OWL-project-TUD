@@ -1,0 +1,11 @@
+.subclass {
+    margin-left: 25px;
+}
+
+.currentCls, a:active {
+    color: #c7254e;
+}
+
+a.cls {
+    cursor: pointer;
+}
