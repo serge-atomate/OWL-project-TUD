@@ -32,7 +32,7 @@ public class Application extends Controller {
 
     public static Result query() throws Exception {
         String results = "";
-        results = Ontology.queryOnt();
+        results = Ontology.queryPublicationsbyYear();
         return ok(results);
     }
 

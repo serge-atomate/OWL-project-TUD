@@ -48,6 +48,9 @@ import de.derivo.sparqldlapi.QueryResult;
 import de.derivo.sparqldlapi.exceptions.QueryEngineException;
 import de.derivo.sparqldlapi.exceptions.QueryParserException;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * Created by serge on 14/12/2014.
@@ -695,8 +698,12 @@ public class Ontology {
 //                    "WHERE { DataProperty(?subject) }";
 
             //// !!!!!!!!!!!!!!! GET ALL ObjectProperty from Ontology
+//            String q = "SELECT ?subject\n" +
+//                    "WHERE { ObjectProperty(?subject) }";
+
+            //// !!!!!!!!!!!!!!! GET ALL ObjectProperty from Ontology
             String q = "SELECT ?subject\n" +
-                    "WHERE { ObjectProperty(?subject) }";
+                    "WHERE { SubClassOf(?subject, <http://swrc.ontoware.org/ontology#Student>) }";
 
 
 //            Query query = Query.create("SELECT ?a ?b\n" +
@@ -749,4 +756,194 @@ public class Ontology {
         return "|";
     }
 
+
+
+
+    public static String queryPublicationsbyYear() throws Exception {
+
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
+        OWLOntology ont = loadOntologyFromFile(manager);
+
+        OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
+
+        OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+        // Ask the reasoner to do all the necessary work now
+//        reasoner.precomputeInferences();
+
+        OWLDataFactory fac = manager.getOWLDataFactory();
+
+        try {
+            QueryEngine queryEng = QueryEngine.create(manager, reasoner);
+
+            String q = "SELECT ?subject\n" +
+                    "WHERE { SubClassOf(?subject, <http://swrc.ontoware.org/ontology#Publication>) }";
+
+            Query query = Query.create(q);
+            // Execute the query and generate the result set
+            QueryResult result = queryEng.execute(query);
+
+            if(!result.ask()) {
+                System.out.println("Query has no solution.\n");
+            }
+            else {
+                System.out.println("Results:");
+                System.out.print(result);
+                System.out.println("-------------------------------------------------");
+                String s = result.toString();
+                System.out.println("Type: "+result.getClass().getName());
+                System.out.println("Result: "+s);
+
+                Pattern p = Pattern.compile("([A-Z])\\w+");
+                Matcher m = p.matcher(s);
+
+                ArrayList<String>  v = new ArrayList<String>();
+
+                while ( m.find() ) {
+
+                    System.out.println("------");
+		            System.out.println(s.substring(m.start(), m.end()));
+                    String word = s.substring(m.start(), m.end());
+                    // skip Nothing class
+                    if(word.equals("Nothing")) {
+                        continue;
+                    }
+                    v.add(word);
+                }
+
+                System.out.println("-------------------------------------------------");
+                int n = v.size();
+
+
+                ArrayList<String> pub = new ArrayList<String>();
+
+                for(int i = 0; i < n ; i++) {
+                    System.out.println(v.get(i));
+
+                    // till here, have all classes, now get individs and count them for each
+                    String uri = "http://swrc.ontoware.org/ontology#"+v.get(i);
+
+                    OWLClass individs = fac.getOWLClass(IRI.create(uri));
+
+                    NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(
+                            individs, true);
+
+                    Set<OWLNamedIndividual> individuals = individualsNodeSet.getFlattened();
+
+                    OWLDataProperty hasYear = fac.getOWLDataProperty(IRI.create("http://swrc.ontoware.org/ontology#year"));
+
+                    System.out.println(i+". Instances of class: "+v.get(i));
+                    int j = 0;
+                    for (OWLNamedIndividual ind : individuals) {
+                        j++;
+                        System.out.println(j+".    " + ind);
+
+                        //======================= Print year of the individual
+                        for (OWLLiteral l : reasoner.getDataPropertyValues(ind, hasYear)) {
+                            if (l.getDatatype().isString()) {
+                                System.out.println("Asserted value: " + l.getLiteral());
+
+                            }
+                        }
+                    }
+
+                    System.out.println("Total: " + j);
+
+                    // Add Totals individs per Class
+                    pub.add(j + "=" + v.get(i));
+
+//                    if(i>2) {
+//                        break;
+//                    }
+
+                }
+
+                for(int k = 0; k < pub.size() ; k++) {
+                    System.out.println(pub.get(k));
+                }
+
+
+
+                System.out.println("-------------------------------------------------");
+                System.out.println("Size of result set: " + result.size());
+            }
+
+        }
+        catch(UnsupportedOperationException exception) {
+            System.out.println("Unsupported reasoner operation.");
+        }
+        finally {
+            if (reasoner != null) {
+                reasoner.dispose();
+            }
+        }
+
+        return "|";
+    }
+
+/*
+    // for Statistics get all individs for Publication and count by Year
+    public static ArrayList countByYear() throws Exception {
+
+        ArrayList<String> jsonObj = new ArrayList<String>();
+        JSONArray listCls = new JSONArray();
+        JSONArray listInd = new JSONArray();
+
+        String uri = "";
+        if(classItem == null || classItem == "") {
+            uri = "http://www.w3.org/2002/07/owl#Thing";
+        } else {
+            uri = "http://swrc.ontoware.org/ontology#"+classItem;
+        }
+
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
+        OWLOntology ont = loadOntologyFromFile(manager);
+
+        OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
+
+        OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+        // Ask the reasoner to do all the necessary work now
+        reasoner.precomputeInferences();
+
+        OWLDataFactory fac = manager.getOWLDataFactory();
+
+        OWLClass individs = fac.getOWLClass(IRI.create(uri));
+
+        NodeSet<OWLNamedIndividual> individualsNodeSet = reasoner.getInstances(
+                individs, true);
+
+        Set<OWLNamedIndividual> individuals = individualsNodeSet.getFlattened();
+
+        OWLDataProperty hasName = fac.getOWLDataProperty(IRI.create("http://swrc.ontoware.org/ontology#name"));
+
+        System.out.println("Instances of class: ");
+        int i = 0;
+        for (OWLNamedIndividual ind : individuals) {
+            i++;
+            System.out.println(i+".    " + ind);
+            if(i>20) {
+                break;
+            }
+
+            //======================= Print name of the individual
+            for (OWLLiteral l : reasoner.getDataPropertyValues(ind, hasName)) {
+                if (l.getDatatype().isString()) {
+                    System.out.println("Asserted value: " + l.getLiteral());
+//                    jsonObj.add("\""+l.getLiteral()+"\"");
+                    jsonObj.add("{\"id\":\""+ind.toString().replace("<http://www.aifb.uni-karlsruhe.de/", "").replace(">", "")+"\", \"name\":\""+l.getLiteral()+"\"}");
+//                    {"firstName":"John", "lastName":"Doe"},
+                }
+            }
+            //            listInd.put(ind);
+//            jsonObj.add("\""+ind.toString().replace("<http://www.aifb.uni-karlsruhe.de/", "").replace(">", "")+"\"");
+        }
+
+        //        jsonObj += ", \"individuals\": " + (listInd.toString()) + " } ";
+
+//        System.out.println("Array List: "+jsonObj);
+
+        return jsonObj;
+    }
+*/
 }
