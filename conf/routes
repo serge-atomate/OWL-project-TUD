@@ -9,15 +9,14 @@ GET     /                           controllers.Application.index()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 #Classes
-GET     /classes                    controllers.Application.classes()
+GET     /classes                    controllers.Classes.classes()
 GET     /classes/cls                controllers.Classes.index(q:String ?= "")
+GET     /allclasses                 controllers.Classes.getClasses()
 
 #Individuals
 GET     /individ                    controllers.Individuals.index(q:String ?= "")
 GET     /individuals                controllers.Individuals.individuals(q:String ?= "")
 
-#Queries
-GET     /sql                        controllers.Application.query()
-
 #Statistics
-GET     /statistics                 controllers.Statistics.index()
+GET     /statistics                 controllers.Statistics.index(q:String ?= "")
+GET     /statistics2                controllers.Statistics.queryPubByYear()

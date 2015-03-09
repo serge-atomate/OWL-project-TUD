@@ -78,10 +78,11 @@ public class Individuals extends Controller {
 
             for (String objectItem : objectItems) {
                 String[] objParts = objectItem.split(":", 2);
+                System.out.println("Size: " + objParts.length);
 
-                if (!objParts[1].equals("\"\"")) {
+                String outputHtml = "";
 
-                    String outputHtml = "";
+                if (objParts.length > 1 && !objParts[1].equals("\"\"")) {
 
                     String[] options = objParts[1].replace("\"", "").split("±");
 
@@ -91,8 +92,13 @@ public class Individuals extends Controller {
                             System.out.println("OPT: " + opt);
                             // split again to take name and id separately
                             String[] parts = opt.split("=");
-                            System.out.println("parts: " + parts[0] +"////"+parts[1]);
-                            outputHtml += "<li class=\"lst\"><a class=\"cls\" href=\"/individ?q="+parts[1]+"\">"+parts[0]+"</a></li>";
+                            System.out.println("Size: " + parts.length);
+                            if(parts.length > 1) {
+                                System.out.println("parts: " + parts[0] + "////" + parts[1]);
+                                outputHtml += "<li class=\"lst\"><a class=\"cls\" href=\"/individ?q=" + parts[1] + "\">" + parts[0] + "</a></li>";
+                            } else {
+                                outputHtml += "<li class=\"lst\"><a class=\"cls\" href=\"#\">" + parts[0] + "</a></li>";
+                            }
                         }
                         outputHtml += "</ul>";
 //                    } else {
@@ -100,6 +106,24 @@ public class Individuals extends Controller {
 //                    }
 
                     objects.add("<li class=\"lst\"><span>" + WordUtils.capitalize(objParts[0].replace("\"", "")) + ":</span>"+outputHtml+"</li>");
+                } else {
+
+//                    String[] options = objParts[0].replace("\"", "").split("±");
+//                    outputHtml = "<ul>";
+//                    for (String opt : options) {
+//                        System.out.println("OPT: " + opt);
+//                        // split again to take name and id separately
+//                        String[] parts = opt.split("=");
+//                        System.out.println("Size: " + parts.length);
+//                        if(parts.length > 1) {
+//                            System.out.println("parts: " + parts[0] + "////" + parts[1]);
+//                            outputHtml += "<li class=\"lst\"><a class=\"cls\" href=\"/individ?q=" + parts[1] + "\">" + parts[0] + "</a></li>";
+//                        } else {
+//                            outputHtml += "<li class=\"lst\"><a class=\"cls\" href=\"#\">" + parts[0] + "</a></li>";
+//                        }
+//                    }
+//                    outputHtml += "</ul>";
+//                    objects.add("<li class=\"lst\"><span>" + WordUtils.capitalize(objParts[0].replace("\"", "")) + ":</span>"+outputHtml+"</li>");
                 }
             }
 

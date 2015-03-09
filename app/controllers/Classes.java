@@ -7,6 +7,8 @@ import play.mvc.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.*;
+
 import views.html.*;
 
 /**
@@ -18,7 +20,8 @@ public class Classes extends Controller {
     public static Result index(String cls) throws Exception  {
         System.out.println("Cls: " + cls);
         if(!cls.equals("owl:Nothing")) {
-            List<String> results = new ArrayList<String>();
+//            List<String> results = new ArrayList<String>();
+            JSONObject results = new JSONObject();
 //        String results = "";
             results = Ontology.rootClasses(cls);
 
@@ -32,6 +35,24 @@ public class Classes extends Controller {
             return ok("{\"classes\" : []}");
         }
 //        return ok(views.html.classes.render(results));
+    }
+
+    public static Result classes() throws Exception {
+
+        JSONObject results = new JSONObject();
+        results = Ontology.rootClasses("");
+
+        String tmp = results.toString().replace("\\", "").replace("\"{", "{").replace("}\"", "}");
+        List<String> listResults = tmp;
+        return ok(views.html.classes.render(results));
+    }
+
+    public static Result getClasses() throws Exception {
+
+        List<String> results = new ArrayList<String>();
+        results = Ontology.getAllClasses();
+
+        return ok(results.toString());
     }
 
 }

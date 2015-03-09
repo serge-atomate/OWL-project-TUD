@@ -9,3 +9,7 @@
 a.cls {
     cursor: pointer;
 }
+
+select#selectedClass {
+    width: 128px;
+}
