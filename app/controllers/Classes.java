@@ -42,14 +42,15 @@ public class Classes extends Controller {
         results = Ontology.rootClasses("");
 
         String html = "";
-        html += buildHierarchically(results);
+        html += buildHierarchically(results, 0);
 
         return ok(views.html.classes.render(html));
     }
 
-    public static String buildHierarchically(JSONObject json) throws JSONException{
+    public static String buildHierarchically(JSONObject json, int level) throws JSONException{
         Iterator<String> keys = json.keys();
-        String html = "<ul>";
+        level += 1;
+        String html = "<ul class='level"+level+"' style=\"display:none;\">";
         while(keys.hasNext()){
             html += "<li class=\"lst\">";
             String key = keys.next();
@@ -64,7 +65,7 @@ public class Classes extends Controller {
 
             if(val != null && !val.equals("\"{}\"")){
                 JSONObject jsonObjVal = new JSONObject(val.replace("\"{\"", "{\"").replace("\"}\"", "\"}").replace("{\"{", "{{").replace("}}\"}}", "}}}}").replace("\"{\"", "{\"").replace("\"}\"", "\"}"));
-                html += buildHierarchically(jsonObjVal);
+                html += buildHierarchically(jsonObjVal, level);
             }
             html += "</li>";
         }

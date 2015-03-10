@@ -5,6 +5,7 @@ function getIndividuals(element,value) {
     element.parent( "li" ).addClass('selected');
     element.addClass("currentCls");
 
+    $('.unavailable').show();
     $('#loaderInds').show();
     $(".individuals").html('');
 
@@ -43,11 +44,14 @@ function getIndividuals(element,value) {
             html: items.join( "" )
         }).appendTo( ".individuals" );
 
+        $('.unavailable').hide();
         $('#loaderInds').hide();
 
        // $(".list-unstyled").html(results);
 
     }).fail(function( jqXHR, textStatus ) {
         alert( "Request failed: " + textStatus );
+        $('.unavailable').hide();
+        $('#loaderInds').hide();
     });
 }

@@ -19,9 +19,10 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-4 mainclasses">
-                        @if(!htmlClasses.isEmpty) {
-                            @Html(htmlClasses)
-                        }
+                    @if(!htmlClasses.isEmpty) {
+                        @Html(htmlClasses)
+                    }
+                    <div class="unavailable" style="display:none;"></div>
                     <!--<div class="subclasses">-->
                         <!--<img style="display:none;" id="loader" src="@routes.Assets.at("images/ajax-loader.gif")" />-->
                     <!--</div>-->
@@ -41,8 +42,14 @@
 <script language="JavaScript">
     $(document).ready(function() {
 
+        $(".level1").show();
+
         $('.cls').click(function(e){
             e.preventDefault();
+
+            //$(".toggled").slideUp();
+
+            $(this).parent( "li" ).find('ul').first().addClass('toggled').slideToggle();
 
             var value = $(this).attr('href');
 
