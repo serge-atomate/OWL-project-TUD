@@ -68,14 +68,12 @@ public class Ontology {
     }
 
 
-    // ==================== Get Classes ==============================
+    // ==================== Get All Classes ==============================
     public static JSONObject rootClasses(String classItem) throws Exception {
-//        public static ArrayList rootClasses(String classItem) throws Exception {
 
         System.out.println("Class: " + classItem);
 
         ArrayList<String> jsonObj = new ArrayList<String>();
-//        HashMap<String, Integer> hierarchic = new HashMap<String, Integer>();
         TreeMap<String, String> hierarchic = new TreeMap<String, String>();
 
         String uri = "";
@@ -105,7 +103,6 @@ public class Ontology {
         Set<OWLClass> clses = subClses.getFlattened();
 
         for (OWLClass cls : clses) {
-            System.out.println("    " + cls);
 
             // Get Results and split by Class name
             Pattern p = Pattern.compile("([A-Z])\\w+");
@@ -114,14 +111,10 @@ public class Ontology {
             while ( m.find() ) {
                 // add classes to the array list
                 String currentClass = cls.toString().substring(m.start(), m.end());
-                System.out.println("    " + currentClass);
 
                 if(!currentClass.equals("Nothing")) {
                     // get subClasses
-//                    ArrayList<String> subClassesList = new ArrayList<String>();
                     String subClassesList = getSubClasses(currentClass, fac, reasoner).replace("\\", "");
-
-                    System.out.println("Subclasses Return List: " + subClassesList);
                     hierarchic.put(currentClass, subClassesList);
                 }
 
@@ -129,19 +122,12 @@ public class Ontology {
             }
         }
 
-        System.out.println("Array List: "+jsonObj);
-        System.out.println("Hierarchic Tree: "+hierarchic);
         JSONObject hierarchicList=new JSONObject(hierarchic);
-        System.out.println("Hierarchic JSON: "+hierarchicList);
 
         return hierarchicList;
-//        return jsonObj;
     }
 
     public static String getSubClasses(String classItem, OWLDataFactory fac, OWLReasoner reasoner) throws Exception {
-//        public static ArrayList getSubClasses(String classItem, OWLDataFactory fac, OWLReasoner reasoner) throws Exception {
-
-        System.out.println("Class: " + classItem);
 
         ArrayList<String> jsonObj = new ArrayList<String>();
         TreeMap<String, String> hierarchic = new TreeMap<String, String>();
@@ -151,7 +137,6 @@ public class Ontology {
             uri = "http://swrc.ontoware.org/ontology#"+classItem;
         } else {
             return "";
-//            return new ArrayList<String>();
         }
 
         OWLClass organizationClass = fac.getOWLClass(IRI
@@ -162,8 +147,6 @@ public class Ontology {
         Set<OWLClass> clses = subClses.getFlattened();
 
         for (OWLClass cls : clses) {
-            System.out.println("    " + cls);
-
             // Get Results and split by Class name
             Pattern p = Pattern.compile("([A-Z])\\w+");
             Matcher m = p.matcher(cls.toString());
@@ -171,13 +154,9 @@ public class Ontology {
             while ( m.find() ) {
                 String currentClass = cls.toString().substring(m.start(), m.end());
                 // add classes to the array list
-                System.out.println("    " + currentClass);
-
                 if(!currentClass.equals("Nothing")) {
                     // get subClasses
-//                    ArrayList<String> subClassesList = new ArrayList<String>();
                     String subClassesList = getSubClasses(currentClass, fac, reasoner);
-                    System.out.println("Subclasses Return List: "+subClassesList);
                     hierarchic.put(currentClass, subClassesList);
                 }
 
@@ -185,15 +164,13 @@ public class Ontology {
             }
 
         }
-
-        System.out.println("Subclasses List: "+jsonObj);
         JSONObject hierarchicList=new JSONObject(hierarchic);
 
         return hierarchicList.toString();
-//        return jsonObj;
     }
+    // ==============================================================
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // ====================== Get Class Individuals =================
     //public static String classesIndividuals(String classItem) throws Exception {
     public static ArrayList classesIndividuals(String classItem) throws Exception {
 

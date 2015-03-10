@@ -4,8 +4,7 @@ import owlAPI.Ontology;
 import play.*;
 import play.mvc.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.json.*;
 
@@ -42,9 +41,35 @@ public class Classes extends Controller {
         JSONObject results = new JSONObject();
         results = Ontology.rootClasses("");
 
-        String tmp = results.toString().replace("\\", "").replace("\"{", "{").replace("}\"", "}");
-        List<String> listResults = tmp;
-        return ok(views.html.classes.render(results));
+        String html = "";
+        html += buildHierarchically(results);
+
+        return ok(views.html.classes.render(html));
+    }
+
+    public static String buildHierarchically(JSONObject json) throws JSONException{
+        Iterator<String> keys = json.keys();
+        String html = "<ul>";
+        while(keys.hasNext()){
+            html += "<li class=\"lst\">";
+            String key = keys.next();
+            String val = null;
+            html += "<a class='cls' href='"+key+"'>"+key+"</a>";
+            try{
+                JSONObject value = json.getJSONObject(key);
+                val = value.toString();
+            }catch(Exception e){
+                val = json.getString(key);
+            }
+
+            if(val != null && !val.equals("\"{}\"")){
+                JSONObject jsonObjVal = new JSONObject(val.replace("\"{\"", "{\"").replace("\"}\"", "\"}").replace("{\"{", "{{").replace("}}\"}}", "}}}}").replace("\"{\"", "{\"").replace("\"}\"", "\"}"));
+                html += buildHierarchically(jsonObjVal);
+            }
+            html += "</li>";
+        }
+        html += "</ul>";
+        return html;
     }
 
     public static Result getClasses() throws Exception {

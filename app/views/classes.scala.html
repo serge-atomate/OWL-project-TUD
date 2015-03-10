@@ -1,4 +1,4 @@
-@(classes: List[String])
+@(htmlClasses: String)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -19,17 +19,12 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-4 mainclasses">
-                    <ul class="list-unstyled">
-                        @if(!classes.isEmpty) {
-                        <!--classes-->
-                            @for(value <- classes) {
-                                <li class="lst"><a class="cls" href='@value.replace("\"", "")'>@value.replace("\"", "")</a></li>
-                            }
+                        @if(!htmlClasses.isEmpty) {
+                            @Html(htmlClasses)
                         }
-                    </ul>
-                    <div class="subclasses">
-                        <img style="display:none;" id="loader" src="@routes.Assets.at("images/ajax-loader.gif")" />
-                    </div>
+                    <!--<div class="subclasses">-->
+                        <!--<img style="display:none;" id="loader" src="@routes.Assets.at("images/ajax-loader.gif")" />-->
+                    <!--</div>-->
                 </div>
 
                 <div class="col-md-8">
@@ -51,7 +46,7 @@
 
             var value = $(this).attr('href');
 
-            getClasses($(this),value);
+            getIndividuals($(this),value);
 
         });
 
