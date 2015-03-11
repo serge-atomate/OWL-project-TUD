@@ -13,6 +13,10 @@ import views.html.*;
 public class Application extends Controller {
 
     public static Result index() throws Exception {
+
+        String comment = Ontology.getOntologyComment();
+
+
         return ok(views.html.homepage.render());
     }
 

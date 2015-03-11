@@ -3,51 +3,35 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("OWL PROJECT") {
+@main("SEMANTIC WEB PROJECT PROJECT - @name") {
 
-<div class="container-fluid">
+<div class="row">
+    @if(!name.isEmpty) {
+        <h3>@name</h3>
+    }
 
-    <div class="row">
-        <div class="col-md-2">
-            <a href="/">Home</a>
-            <br/>
-            <a href="/classes">Classes</a>
-            <br/>
-            <a href="/statistics">Statistics</a>
+    @if(!dataItm.isEmpty) {
+        <div class="col-md-6">
+            <ul class="list-unstyled">
+                    <!--Data Properties-->
+                    @for(value <- dataItm) {
+                        @Html(value)
+                        <!--<li class="lst"><a class="cls" href='/individ?q=@value'>@value</a></li>-->
+                    }
+            </ul>
         </div>
+    }
 
-        <div class="col-md-10">
-            @if(!name.isEmpty) {
-                <h2>@name</h2>
-            }
-
-            <div class="row">
-                @if(!dataItm.isEmpty) {
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                                <!--Data Properties-->
-                                @for(value <- dataItm) {
-                                    @Html(value)
-                                    <!--<li class="lst"><a class="cls" href='/individ?q=@value'>@value</a></li>-->
-                                }
-                        </ul>
-                    </div>
-                }
-
-                @if(!objItm.isEmpty) {
-                    <div class="col-md-6">
-                        <ul class="list-unstyled">
-                                <!--Object Properties-->
-                                @for(value <- objItm) {
-                                    @Html(value)
-                                }
-                        </ul>
-                    </div>
-                }
-            </div>
+    @if(!objItm.isEmpty) {
+        <div class="col-md-6">
+            <ul class="list-unstyled">
+                    <!--Object Properties-->
+                    @for(value <- objItm) {
+                        @Html(value)
+                    }
+            </ul>
         </div>
-    </div>
-
+    }
 </div>
 
 

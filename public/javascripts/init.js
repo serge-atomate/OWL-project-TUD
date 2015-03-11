@@ -33,7 +33,7 @@ function getIndividuals(element,value) {
                     }
                 });
             } else {
-                items.push("<li>No individuals found</li>");
+                items.push("<li>No data found</li>");
             }
 
         });
@@ -55,3 +55,26 @@ function getIndividuals(element,value) {
         $('#loaderInds').hide();
     });
 }
+
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+
+$(document).ready(function() {
+
+    // get url and add active class to correspondent item in main menu
+    var href = location.pathname;
+
+    $(".mainmenu").find("a").each(function( index ) {
+        if(href == $( this ).attr('href')) {
+            $(this).addClass('active');
+        }
+    });
+
+
+});

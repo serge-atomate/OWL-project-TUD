@@ -7,7 +7,7 @@
         <title>@title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon-16x16.png")">
 
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
@@ -19,7 +19,37 @@
     </head>
     <body>
         <div class="container">
-            @content
+            <div class="container-fluid">
+                <div class="row page-header">
+                    <div class="col-md-4">
+                        <a class="logo-tud" target="_blank" href="http://tu-dresden.de/"></a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="logo" href="/"><h3>Semantic Web Project</h3></a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="logo-iccl" target="_blank" href="https://ddll.inf.tu-dresden.de/web/International_Center_for_Computational_Logic"></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 list-group mainmenu">
+                        <a class="list-group-item" href="/">Home</a>
+                        <a class="list-group-item" href="/classes">Classes</a>
+                        <a class="list-group-item" href="/statistics">Statistics</a>
+                    </div>
+
+                    <div class="col-md-10">
+                        @content
+                    </div>
+                </div>
+
+                <div class="row footer">
+                    <div class="col-md-12">
+                        <p>© 2015 <a class="developedby" target="_blank" href="http://stratan.eu">Developed by: Serge Stratan</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

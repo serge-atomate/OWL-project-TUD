@@ -68,6 +68,62 @@ public class Ontology {
     }
 
 
+    public static String getOntologyComment() throws Exception {
+
+        String comment = "";
+
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
+        OWLOntology ont = loadOntologyFromFile(manager);
+
+//        OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
+//
+//        OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+
+        OWLDataFactory fac = manager.getOWLDataFactory();
+
+        System.out.println("Comment: " + fac.getRDFSComment());
+
+        OWLAnnotation commentAnno = fac.getOWLAnnotation(fac.getRDFSComment(),
+                fac.getOWLLiteral("A class which represents pizzas", "en"));
+        System.out.println("Comment: " + commentAnno);
+
+//        OWLAnnotation commentAnno = df.getOWLAnnotation(df.getRDFSComment(),
+//                df.getOWLLiteral("A class which represents pizzas", "en"));
+
+       /* OWLClass organizationClass = fac.getOWLClass(IRI
+                .create(uri));
+
+        NodeSet<OWLClass> subClses = reasoner.getSubClasses(organizationClass, true);
+
+        Set<OWLClass> clses = subClses.getFlattened();
+
+        for (OWLClass cls : clses) {
+
+            // Get Results and split by Class name
+            Pattern p = Pattern.compile("([A-Z])\\w+");
+            Matcher m = p.matcher(cls.toString());
+
+            while ( m.find() ) {
+                // add classes to the array list
+                String currentClass = cls.toString().substring(m.start(), m.end());
+
+                if(!currentClass.equals("Nothing")) {
+                    // get subClasses
+                    String subClassesList = getSubClasses(currentClass, fac, reasoner).replace("\\", "");
+                    hierarchic.put(currentClass, subClassesList);
+                }
+
+                jsonObj.add("\""+currentClass+"\"");
+            }
+        }
+
+        JSONObject hierarchicList=new JSONObject(hierarchic);
+        */
+
+        return comment;
+    }
+
     // ==================== Get All Classes ==============================
     public static JSONObject rootClasses(String classItem) throws Exception {
 

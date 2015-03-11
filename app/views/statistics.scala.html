@@ -3,75 +3,50 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("OWL PROJECT") {
+@main("SEMANTIC WEB PROJECT - Statistics") {
 
-<div class="container-fluid">
+<div class="row">
+    <div class="col-md-6">
+        <select class="form-control" id="selectedClass" data-toggle="popover" data-trigger="focus" data-content="Please select a class to generate charts">
+            <option value="">Select a Class</option>
+            <option value="Person">Person</option>
+            <option value="Employee">Employee</option>
+            <option value="Student">Student</option>
+            <option value="Publication">Publication</option>
+        </select>
+    </div>
+</div>
 
-    <div class="row">
-        <div class="col-md-2">
-            <a href="/">Home</a>
-            <br/>
-            <a href="/classes">Classes</a>
-            <br/>
-            <a href="/statistics">Statistics</a>
-        </div>
+<div class="row charts">
+    <div class="col-md-12">
+        <ul id="chartType" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#pie" id="pie-tab" role="tab" data-toggle="tab" aria-controls="pie" aria-expanded="true">Pie Chart</a></li>
+            <li role="presentation"><a href="#polar" role="tab" id="polar-tab" data-toggle="tab" aria-controls="polar">Bar Chart</a></li>
+            <li role="presentation"><a href="#bar" role="tab" id="bar-tab" data-toggle="tab" aria-controls="bar">Polar Area Chart</a></li>
+            <li role="presentation"><a href="#radar" role="tab" id="radar-tab" data-toggle="tab" aria-controls="radar">Radar Chart</a></li>
+        </ul>
 
-        <div class="col-md-10">
+        <h3>"Number of Individuals by Class"</h3>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <select class="form-control" id="selectedClass" data-toggle="popover" data-trigger="focus" data-content="Please select a class to generate charts">
-                        <option value="">Select a Class</option>
-                        <option value="Person">Person</option>
-                        <option value="Employee">Employee</option>
-                        <option value="Student">Student</option>
-                        <option value="Publication">Publication</option>
-                    </select>
-                </div>
+        <div id="myTabContent" class="tab-content">
+            <div role="tabpanel" class="tab-pane in active" id="pie" aria-labelledby="pie-tab">
+                <div id="canvas-holder"><canvas id="chart-area" width="500" height="500"/></div>
             </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <ul id="chartType" class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#pie" id="pie-tab" role="tab" data-toggle="tab" aria-controls="pie" aria-expanded="true">Pie Chart</a></li>
-                        <li role="presentation"><a href="#polar" role="tab" id="polar-tab" data-toggle="tab" aria-controls="polar">Bar Chart</a></li>
-                        <li role="presentation"><a href="#bar" role="tab" id="bar-tab" data-toggle="tab" aria-controls="bar">Polar Area Chart</a></li>
-                        <li role="presentation"><a href="#radar" role="tab" id="radar-tab" data-toggle="tab" aria-controls="radar">Radar Chart</a></li>
-                    </ul>
-
-                    <h2>Charts: "Number of Individuals by Class"</h2>
-
-                    <div id="myTabContent" class="tab-content">
-                        <div role="tabpanel" class="tab-pane in active" id="pie" aria-labelledby="pie-tab">
-                            <div id="canvas-holder"><canvas id="chart-area" width="500" height="500"/></div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="polar" aria-labelledby="polar-tab">
-                            <div id="canvas-holder"><canvas id="chart-area2" width="500" height="500"/></div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="bar" aria-labelledby="bar-tab">
-                            <div id="canvas-holder"><canvas id="chart-area3" width="500" height="500"/></div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="radar" aria-labelledby="radar-tab">
-                            <div id="canvas-holder"><canvas id="chart-area4" width="500" height="500"/></div>
-                        </div>
-                    </div>
-                </div>
+            <div role="tabpanel" class="tab-pane" id="polar" aria-labelledby="polar-tab">
+                <div id="canvas-holder"><canvas id="chart-area2" width="500" height="500"/></div>
             </div>
-
+            <div role="tabpanel" class="tab-pane" id="bar" aria-labelledby="bar-tab">
+                <div id="canvas-holder"><canvas id="chart-area3" width="500" height="500"/></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="radar" aria-labelledby="radar-tab">
+                <div id="canvas-holder"><canvas id="chart-area4" width="500" height="500"/></div>
+            </div>
         </div>
     </div>
-
 </div>
 
 
 <script language="JavaScript">
-
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
 
     $(document).ready(function() {
 
@@ -158,8 +133,6 @@
                 }
             ]
         };
-
-
 
         $('#chartType a').click(function (e) {
             e.preventDefault();

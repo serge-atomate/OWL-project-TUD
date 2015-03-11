@@ -27,4 +27,43 @@ select#selectedClass {
     background: #fff;
     opacity: 0.5;
     top: 0px;
+    cursor: not-allowed;
+}
+
+.logo-tud {
+    background: url("../images/tud_logo_intern.gif") no-repeat;
+    display: block;
+    width: 128px;
+    height: 37px;
+    margin: 20px;
+}
+
+.logo-iccl {
+    background: url("../images/iccl-web.png") no-repeat;
+    display: block;
+    width: 262px;
+    height: 40px;
+    margin: 20px;
+}
+
+.page-header {
+    margin: 10px 0px 20px 0px!important;
+}
+
+.page-header div a {
+    text-align: center;
+}
+
+.footer {
+    margin: 10px 0px 10px 0px;
+    font-size: 11px;
+    text-align: center;
+}
+
+.developedby {
+    color: #000;
+}
+
+.charts {
+    margin: 20px 0px;
 }

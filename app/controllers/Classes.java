@@ -52,7 +52,7 @@ public class Classes extends Controller {
         level += 1;
         String html = "<ul class='level"+level+"' style=\"display:none;\">";
         while(keys.hasNext()){
-            html += "<li class=\"lst\">";
+            html += "<li class=\"dropdown-toggle lst\">";
             String key = keys.next();
             String val = null;
             html += "<a class='cls' href='"+key+"'>"+key+"</a>";
