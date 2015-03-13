@@ -16,6 +16,7 @@ GET     /allclasses                 controllers.Classes.getClasses()
 #Individuals
 GET     /individ                    controllers.Individuals.index(q:String ?= "")
 GET     /individuals                controllers.Individuals.individuals(q:String ?= "")
+GET     /stat                       controllers.Individuals.statisticsIndivid(q:String ?= "")
 
 #Statistics
 GET     /statistics                 controllers.Statistics.index(q:String ?= "")

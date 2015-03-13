@@ -67,3 +67,98 @@ select#selectedClass {
 .charts {
     margin: 20px 0px;
 }
+
+.individ h3 {
+    margin: 0px 0px 20px 0px;
+}
+
+.dataProperties {
+    border-bottom: 1px solid #e1e1e8;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.individ .Fax {
+    background: url("../images/fax-icon.png") no-repeat;
+    padding-left: 30px;
+}
+
+.individ .Phone {
+    background: url("../images/phone-icon16.png") no-repeat;
+    padding-left: 30px;
+}
+
+.individ .Homepage {
+    background: url("../images/home-icon.png") no-repeat;
+    padding-left: 30px;
+}
+
+.individ .Email {
+    background: url("../images/mail_icon.png") no-repeat;
+    padding-left: 30px;
+}
+
+.dataProperties li.lst {
+    line-height: 18px;
+    padding-bottom: 5px;
+}
+
+.dataProperties li.lst span {
+    margin-right: 10px;
+    min-width: 150px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.objectsProperties li span {
+    border-bottom: 1px solid #e1e1e8;
+    padding: 0px 0px 10px 0px;
+    margin: 10px 0px;
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+}
+
+.objectsProperties li.Publication ul.items,
+.objectsProperties li.Publishes ul.items,
+.objectsProperties li.Author ul.items,
+.objectsProperties li.Member ul.items,
+.objectsProperties li.Employs ul.items,
+.objectsProperties li.Head ul.items,
+.objectsProperties li.ProjectInfo ul.items,
+.objectsProperties li.IsWorkedOnBy ul.items {
+    padding-left: 20px;
+}
+
+.objectsProperties ul.items li {
+    line-height: 22px;
+}
+
+.objectsProperties li.Publication ul li.lst,
+.objectsProperties li.Publishes ul li.lst,
+.objectsProperties li.ProjectInfo ul li.lst {
+    padding: 5px 30px 5px 30px;
+    // list-style-image: url("../images/paper-icon.png");
+    background: url("../images/paper-icon.png") no-repeat;
+    list-style: none;
+    line-height: 18px;
+}
+
+.objectsProperties li.Author ul li.lst,
+.objectsProperties li.Member ul li.lst,
+.objectsProperties li.Employs ul li.lst,
+.objectsProperties li.Head ul li.lst,
+.objectsProperties li.IsWorkedOnBy ul li.lst  {
+    padding: 0px 30px 0px 30px;
+    background: url("../images/person-icon.png") no-repeat;
+    list-style: none;
+    line-height: 26px;
+}
+
+ul.pagination li a {
+    margin-bottom: 10px;
+}
+
+.objectsProperties nav {
+    text-align: center;
+}

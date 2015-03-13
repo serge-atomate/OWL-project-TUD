@@ -313,8 +313,6 @@ public class Ontology {
                 .create("http://www.aifb.uni-karlsruhe.de/" + individual));
 
         //======================= Get DATA PROPERTY of the individual
-//        OWLDataProperty hasName = fac.getOWLDataProperty(IRI.create("http://swrc.ontoware.org/ontology#name"));
-
         List<String> listDataProperty = new ArrayList();
         listDataProperty.add("abstract");
         listDataProperty.add("address");
@@ -363,7 +361,7 @@ public class Ontology {
                     value += StringEscapeUtils.unescapeJava(l.getLiteral().replace("\n", " ").replace("\r", " "));
                 }
             }
-            dataStr += value+"\";";
+            dataStr += value+"\"¡";
         }
         json.add("{ \"data\": [ {"+dataStr.substring(0, dataStr.length()-1)+"} ]");
 //        json.add("{\"id\":\"" + individual + "\", \"data\": [ {"+dataStr.substring(0, dataStr.length()-1)+"} ]");
@@ -439,13 +437,14 @@ public class Ontology {
 //                    System.out.println(l.toString().replace("<http://www.aifb.uni-karlsruhe.de/", "").replace(">", ""));
 //                    System.out.println(nameResults.get(1));
 //                }
+
                 String yearInfo = "";
                 if(nameResults.size()>1) {
                   yearInfo = " ("+nameResults.get(1)+")";
                 }
                 if(i>=1) {
                     //add sepparator if more elements
-                    value += nameResults.get(0)+yearInfo+"="+l+"±";
+                    value += nameResults.get(0)+yearInfo+"="+l+"¿";
                 } else {
                     value += nameResults.get(0)+yearInfo+"="+l;
                 }
@@ -454,9 +453,10 @@ public class Ontology {
             if(value.substring(value.length() - 1).equals(";")){
                 value = value.substring(0, value.length()-1);
             }
-            objStr += StringEscapeUtils.unescapeJava(value) + "\";";
+            objStr += StringEscapeUtils.unescapeJava(value) + "\"¡";
         }
         json.add("\"objects\": [ {"+objStr.substring(0, objStr.length()-1)+"} ] }");
+        System.out.println(json);
 
         return json;
     }
@@ -676,6 +676,69 @@ public class Ontology {
         }
     }
 
+    // ======================== Statistics for Individ get Publications by Year ========================
+    public static HashMap queryPublicationsbyYearIndivid(String individual) throws Exception {
+        System.out.println("Individ: " + individual);
+
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
+        OWLOntology ont = loadOntologyFromFile(manager);
+
+        OWLReasonerFactory reasonerFactory = new Reasoner.ReasonerFactory();
+
+        OWLReasoner reasoner = reasonerFactory.createReasoner(ont);
+//        reasoner.precomputeInferences();
+
+        OWLDataFactory fac = manager.getOWLDataFactory();
+
+        OWLNamedIndividual individ = fac.getOWLNamedIndividual(IRI
+                .create("http://www.aifb.uni-karlsruhe.de/" + individual));
+
+        HashMap<String, Integer> years = new HashMap<String, Integer>();
+
+        int i=0;
+        for (OWLNamedIndividual l : reasoner.getObjectPropertyValues(individ, fac.getOWLObjectProperty(IRI
+                .create("http://swrc.ontoware.org/ontology#publication"))).getFlattened()) {
+            i++;
+
+//            System.out.println(l.toString().replace("<http://www.aifb.uni-karlsruhe.de/", "").replace(">", ""));
+            String year = getYearPublication(l.toString().replace("<http://www.aifb.uni-karlsruhe.de/", "").replace(">", ""), fac, reasoner);
+//            System.out.println("Year: "+year);
+
+            // check if year is not in the list already
+            if(!years.containsValue(year)) {
+                //add year to the list, together with counting
+                if(years.get(year) == null) {
+                    years.put(year, 1);
+                } else {
+                    years.put(year, years.get(year)+1);
+                }
+
+            }
+
+        }
+        System.out.println("Total: "+i);
+
+        return years;
+    }
+
+
+    // ===============================   get Title/Name of the individ   =====================================
+    public static String getYearPublication(String id, OWLDataFactory fac, OWLReasoner reasoner) throws Exception {
+
+        String year = "";
+
+        OWLNamedIndividual individ = fac.getOWLNamedIndividual(IRI
+                .create("http://www.aifb.uni-karlsruhe.de/" + id));
+
+        for (OWLLiteral l : reasoner.getDataPropertyValues(individ, fac.getOWLDataProperty(IRI.create("http://swrc.ontoware.org/ontology#year")))) {
+            if (l.getDatatype().isString() && !l.getLiteral().equals("")) {
+                year = l.getLiteral();
+            }
+        }
+
+        return year;
+    }
 
 
     public static ArrayList getAllClasses() throws Exception {
